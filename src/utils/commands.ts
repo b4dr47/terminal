@@ -141,12 +141,6 @@ eternals: async (args: string[]): Promise<string> => {
   }, 1000);
   return `Opening Eternals Online - The Global Discord MMORPG!`;
 },
-docker: async (args: string[]): Promise<string> => {
-  setTimeout(function () {
-    window.open('https://hub.docker.com/u/0xgingi');
-  }, 1000);
-  return `Opening My Docker Profile!`;
-},
 github: async (args: string[]): Promise<string> => {
   setTimeout(function () {
     window.open('https://github.com/0xGingi/');
@@ -166,10 +160,10 @@ flag: async (args: string[]): Promise<string> => {
     return 'Permission denied.';
   }
 },
-trustynotes: async (args: string[]): Promise<string> => {
+moltly: async (args: string[]): Promise<string> => {
   setTimeout(function () {
-    window.open('https://trustynotes.app/');
+    window.open('https://moltly.xyz/');
   }, 1000);
-  return `Opening trustynotes!`;
+  return `Opening moltly!`;
 },
 };
