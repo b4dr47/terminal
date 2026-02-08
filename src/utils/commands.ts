@@ -13,7 +13,7 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
   su: (args: string[]) => {
     if (args[0] === 'root') {
       const password = prompt('Password:');
-      if (password === 'root') {
+      if (password === '2147483647') {
         user.set('root');
         return 'Successfully switched to root.';
       } else {
@@ -23,24 +23,88 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
       return 'Usage: su root';
     }
   },
+  ls: () => {
+    return `'openThis'  'gift' 'github' 'email' 'passwd'`;
+  },
   whoami: (args?: string[]) => {
     if (args && args.length > 0) {
       return 'whoami: expected no arguments, but got ' + args.length;
     }
     return currentUser;
   },
-  date: () => new Date().toLocaleString(),
   echo: (args: string[]) => args.join(' '),
   sudo: (args: string[]) => {
     window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
 
     return `Permission denied: unable to run the command '${args[0]}' as root.`;
   },
+  cat: async (args: string[]) => {
+    const usage = `Usage: cat [files].
+    [Examples]:
+      cat filename
+    `;
+    if (args.length === 0) {
+      return usage;
+    }
+
+    switch (args[0]) {
+      case 'openThis': {
+        window.open("https://youtu.be/IxX_QHay02M?si=ZM1BbEPqLvsL4FRu");
+        return 'Opening website...';
+      };
+      case 'gift': {
+        const data = `
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⡿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣻⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⡽⣯⣻⣻⡽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣻⣻
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⡿⣿⣿⣿⣿⣿⣿⡿⣻⣻⣻⣻⣻⣻⡽⣯⣟⢷⠍⠟⠉⠛⢿⢿⣻⣻⢿⣿⣿⣯⣻⡽⣯⣻⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢯
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣻⣻⣻⡟⡅⠀⠀⠀⠠⠀⠀⠆⡹⣻⣻⡽⣯⣻⡽⣯⣻⡽⣻⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣻⣻
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣿⡟⡛⡜⡜⣎⢦⢶⣖⡴⡀⠠⣿⣿⣿⣟⣟⣟⣟⣟⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣻⣻⣻
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣻⢆⢭⢎⢎⢞⡝⣝⡽⡽⡣⢂⣟⢯⢯⢯⣿⣻⣻⡽⣻⡽⣻⣻⣿⣿⣿⣿⣿⣿⣿⡿⣟⣿⣿⣿⣿⣻
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣟⢧⡒⡔⢆⢯⢎⠚⡜⡇⣼⣿⣿⣯⣻⣻⣻⣻⢯⣿⣿⣻⣻⣻⣻⢿⣿⣿⣿⣿⡿⣻⣻⣻⣟⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⢹⢧⢣⢣⠡⡋⡯⣫⢯⡹⣹⣿⣿⣿⣿⣯⣻⣻⣻⣿⣿⣻⣻⣻⣿⣟⣟⢿⣿⣿⣿⣿⣻⢿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠧⢣⢢⢌⣍⡹⡽⣹⣽⣿⣿⣿⣿⣿⡽⣯⣻⢯⣻⢯⣻⣻⣿⣿⣿⣿⣻⣻⣻⣻⢿⢿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⡽⣍⢎⢎⢝⢏⢏⣝⢿⣿⣿⣿⣿⣿⣿⣻⡽⣯⣻⣻⣿⣿⣟⢿⣿⢿⣻⣻⣿⣿⢿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣟⣟⣟⡜⡜⡜⡝⡭⣫⢫⠂⢫⣿⣿⣿⣟⢯⣻⣻⣻⡽⣻⣿⣿⣿⣟⣿⣿⣿⣻⣟⣟⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⢿⡿⣿⢿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⡿⡽⡻⡿⣇⢣⢣⠱⡱⡱⣽⣿⠀⠀⠀⠀⠐⢉⠍⡛⢿⢯⣻⣻⣿⣿⡿⣿⣿⣿⣿⣟⣟⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣟⢿⣿⣿⣿⡿⣿⣿⣟⢿⣻⣻⡿⣏⢋⠀⠀⠀⣹⣻⡇⢣⠱⣥⣻⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿⣻⣿⣿⣿⣟⣟⣟⡽⣻⣿⡿⡿⣿⣿⣿
+⣿⣿⣿⣿⣿⢿⣿⣿⣿⢿⣻⣿⢿⣿⣿⢿⣻⣻⣻⡃⠀⠀⠀⠀⠀⠀⠠⠠⡣⢢⠱⡉⠙⠛⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣻⡽⣻⣿⢯⣻⣿⣿⢯⣻⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⢿⣻⣻⣿⣟⣟⣟⣿⣿⣿⣿⣿⡿⣟⣟⠄⠀⠀⠀⠀⠀⠀⠀⢀⢆⡑⠡⠉⠋⠖⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣻⢯⣻⡽⣻⣻⡿⣯⢿⣿⣿⣿⣿⣿
+⣿⣻⣟⣟⣿⣿⣿⣿⣟⣟⣟⣟⣿⣿⣿⣿⣟⣟⡽⡄⠀⠀⠀⠀⠀⠀⠀⢀⠁⣯⠚⠹⠶⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣻⢯⢯⣻⣿⣿⣻⣻⣻⣿⣿⣿⣿⣿
+⣿⣟⢿⣿⣿⣿⣿⣿⣻⣿⡿⣻⣻⣿⣿⣿⢿⣻⢯⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⣟⠖⡖⡤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⢿⣻⣿⣻⣿⣿⣿⣿⣿⣻⢯⣻⣻⣻
+⣿⣻⣻⣿⣿⣿⣿⣻⣽⣿⣿⣟⣟⢿⣿⣿⡿⣻⣻⠀⠀⠀⠀⠀⠀⠀⠀⠀⢦⢢⣠⣀⠀⠀⠀⠀⠩⡛⡝⡜⡖⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢿⣿⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣻⣻⣻⣿⣿⡿⣻⣿⣿⣻⣻⣿⣿⡿⣿⣻⣻⣻⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⡜⠈⠁⠀⠀⠀⠀⠀⠌⣌⢎⡜⡜⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣻⣿⣿⡿⣟⢿⣿⣿⣿
+⣟⣿⣿⣿⡽⡽⡽⣻⣹⡽⣿⣿⣿⣻⣻⣻⣻⡽⣻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⢢⠣⠒⠀⠀⠀⠀⠀⠀⠎⢎⢎⢎⢎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣟⡽⣿⣿⣻⣻⣻⢿⣿⣿
+⣿⣿⢿⣿⣯⣫⣏⢯⣫⣿⣿⣿⣿⣟⣟⣟⣟⡽⡽⠀⡀⠀⠀⠀⠀⢀⢀⠀⠰⡰⠤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡝⡽⡽⣿⣿⣿⣻⡝⡽
+⣯⣯⣯⣯⢯⣫⢫⣻⡿⣻⣿⣿⣿⣿⣿⣻⡽⡽⣭⠂⠀⡰⡱⠡⠢⢂⠆⠀⢠⠰⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⢯⢫⣫⡿⣻⣿⣿⣿⣻⡹
+⡿⡿⣻⣻⣻⢭⣚⢧⢫⣻⣿⣿⡿⡽⡽⡽⡽⣹⣝⢇⠄⠀⠀⠄⠄⠄⡐⠀⠄⡐⠐⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡝⣝⡽⣹⢽⢯⡻⣻⣟⢯⢫⣚⣟⣟⣟⣟⣟⣟⡝
+⣯⣻⡽⣯⣻⡜⡵⡽⣎⢭⣻⡝⡽⣽⡽⣝⣝⣝⡝⣗⢭⢎⠀⠀⠂⠂⠀⠀⠀⡐⠐⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣹⣝⣝⡝⣝⡽⡽⡹⣚⠵⡭⢯⢯⢯⣻⡽⡽⣣
+⣟⣟⡽⣯⢯⢎⢎⢯⣏⡗⡝⣝⡽⣻⢯⣫⢫⢫⣫⣻⢯⡳⡱⡱⡱⠀⠀⠀⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⡝⡝⡝⣝⡝⡝⡭⣫⢫⢭⣚⣝⣝⣝⡽⣹⣹⢧
+⢏⠯⢫⢫⢫⢪⢎⢯⢏⠳⡹⡹⣻⡿⡯⣫⢫⡹⡹⡽⡽⡹⡸⡜⡄⠀⠀⢀⢂⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡭⡭⣫⡹⡹⡭⣫⢫⢫⣚⡜⡝⡝⣝⣝⢽⡹⡭
+          `;
+        return data;
+      };
+      case ("github"): {
+        setTimeout(function () {
+          window.open('https://github.com/b4dr47/');
+        }, 1000);
+        return `Opening My Github Profile!`;
+      };
+      case ("email"): {
+        window.open(`mailto:${packageJson.author.email}`);
+        return `Opening mailto:${packageJson.author.email}...`;
+      };
+      case ("passwd"): {
+        return `INX_MAX`;
+      };
+      default: {
+        return usage;
+      };
+    }
+  },
   theme: (args: string[]) => {
     const usage = `Usage: theme [args].
     [args]:
       ls: list all available themes
-      set: set theme to [theme]
+    set: set theme to [theme]
 
     [Examples]:
       theme ls
@@ -56,12 +120,12 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
         result += `You can preview all these themes here: ${packageJson.repository.url}/tree/master/docs/themes`;
 
         return result;
-      }
+      };
 
       case 'set': {
         if (args.length !== 2) {
           return usage;
-        }
+        };
 
         const selectedTheme = args[1];
         const t = themes.find((t) => t.name.toLowerCase() === selectedTheme);
@@ -77,7 +141,7 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
 
       default: {
         return usage;
-      }
+      };
     }
   },
   repo: () => {
@@ -90,21 +154,38 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
 
     return '';
   },
-  email: () => {
-    window.open(`mailto:${packageJson.author.email}`);
+  izcc: (args: string[]) => {
+    const usage = `Usage: izcc [args].
+    [args]:
+     infor zsisc ckcsc cmioc
+    [Examples]:
+        izcc infor
+    `;
+    if (args.length === 0) {
+      return usage;
+    };
 
-    return `Opening mailto:${packageJson.author.email}...`;
-  },
-  weather: async (args: string[]) => {
-    const city = args.join('+');
-
-    if (!city) {
-      return 'Usage: weather [city]. Example: weather Brussels';
+    switch (args[0]) {
+      case 'infor': {
+        window.open("https://38.infor.org");
+        return 'Opening website...';
+      };
+      case 'zsisc': {
+        window.open("https://instagram.com/zsisc_32nd");
+        return 'Opening instagram...';
+      };
+      case 'ckcsc': {
+        window.open("https://ckcsc.net");
+        return 'Opening website...';
+      };
+      case 'cmioc': {
+        window.open("https://www.instagram.com/cmioc_32nd/")
+        return 'Opening instagram...';
+      };
+      default: {
+        return usage;
+      };
     }
-
-    const weather = await fetch(`https://wttr.in/${city}?ATu`);
-
-    return weather.text();
   },
   exit: () => {
     return 'Please close the tab to exit.';
@@ -113,7 +194,6 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
     if (args.length === 0) {
       return 'curl: no URL provided';
     }
-
     const url = args[0];
 
     try {
@@ -121,49 +201,34 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
       const data = await response.text();
 
       return data;
-    } catch (error) {
+    }
+    catch (error) {
       return `curl: could not fetch URL ${url}. Details: ${error}`;
     }
+
   },
   banner: () => `
-░█████╗░██╗░░██╗░██████╗░██╗███╗░░██╗░██████╗░██╗
-██╔══██╗╚██╗██╔╝██╔════╝░██║████╗░██║██╔════╝░██║
-██║░░██║░╚███╔╝░██║░░██╗░██║██╔██╗██║██║░░██╗░██║
-██║░░██║░██╔██╗░██║░░╚██╗██║██║╚████║██║░░╚██╗██║
-╚█████╔╝██╔╝╚██╗╚██████╔╝██║██║░╚███║╚██████╔╝██║
-░╚════╝░╚═╝░░╚═╝░╚═════╝░╚═╝╚═╝░░╚══╝░╚═════╝░╚═╝ v${packageJson.version}
-
-Type 'help' to see list of available commands
+       #                     #      ####### 
+#####  #    #  #####  #####  #    #  #    #  
+#    # #    #  #    # #    # #    #      #   
+#####  #    #  #    # #    # #    #     #    
+#    # ####### #    # #####  #######   #     
+#    #      #  #    # #   #       #    #     
+#####       #  #####  #    #      #    #     
+  Type 'help' to see list of available commands
 `,
-eternals: async (args: string[]): Promise<string> => {
-  setTimeout(function () {
-    window.open('https://wiki.eternalsonline.com/');
-  }, 1000);
-  return `Opening Eternals Online - The Global Discord MMORPG!`;
-},
-github: async (args: string[]): Promise<string> => {
-  setTimeout(function () {
-    window.open('https://github.com/0xGingi/');
-  }, 1000);
-  return `Opening My Github Profile!`;
-},
-flag: async (args: string[]): Promise<string> => {
-  let currentUser;
-  user.subscribe(value => currentUser = value);
 
-  if (currentUser === 'root') {
-    setTimeout(function () {
-      window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-    }, 1000);
-    return `You found me!`
+  flag: async (args: string[]): Promise<string> => {
+    let currentUser;
+    user.subscribe(value => currentUser = value);
+
+    if (currentUser === 'root') {
+      setTimeout(function () {
+        window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+      }, 1000);
+      return `You found me!`
     } else {
-    return 'Permission denied.';
-  }
-},
-moltly: async (args: string[]): Promise<string> => {
-  setTimeout(function () {
-    window.open('https://moltly.xyz/');
-  }, 1000);
-  return `Opening moltly!`;
-},
+      return 'Permission denied.';
+    }
+  },
 };
