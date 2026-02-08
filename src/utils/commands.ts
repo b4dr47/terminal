@@ -94,7 +94,7 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
         return `Opening mailto:${packageJson.author.email}...`;
       };
       case ("passwd"): {
-        return `INX_MAX`;
+        return `INT_MAX`;
       };
       default: {
         return usage;
