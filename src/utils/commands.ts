@@ -15,6 +15,7 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
       const password = prompt('Password:');
       if (password === '2147483647') {
         user.set('root');
+        currentUser = "root";
         return 'Successfully switched to root.';
       } else {
         return 'Sorry, try again.';

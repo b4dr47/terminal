@@ -5,13 +5,13 @@
   "type": "module",
   "license": "MIT",
   "author": {
-    "name": "0xGingi",
-    "url": "https://0xgingi.xyz",
-    "email": "0xgingi@0xgingi.com"
+    "name": "b4dr47",
+    "url": "https://b4dr47.dev",
+    "email": "me@b4dr47.dev"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/0xGingi/terminal"
+    "url": "https://github.com/b4dr47/terminal"
   },
   "scripts": {
     "dev": "vite",
